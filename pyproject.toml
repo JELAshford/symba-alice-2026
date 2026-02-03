@@ -1,0 +1,17 @@
+[project]
+name = "symba-alice-2026"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "James Ashford", email = "ashfordj@rocketmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = []
+
+[project.scripts]
+symba-alice-2026 = "symba_alice_2026:main"
+
+[build-system]
+requires = ["uv_build>=0.8.22,<0.9.0"]
+build-backend = "uv_build"
