@@ -11,6 +11,7 @@ from symba_alice_2026.basic_barricelli import (
 import matplotlib.pylab as plt
 import numpy as np
 
+
 # Demo in paper (Fig 17. Numerical Testing of Evolution Theories)
 TIMESTEPS = 30
 SIZE = 60
@@ -33,6 +34,29 @@ fig, ax = plt.subplots(1, 1)
 ax.imshow(grid, aspect="auto", interpolation="none", cmap="gray")
 plt.axis("off")
 plt.savefig("out/fig17.png", bbox_inches="tight", transparent=True, dpi=200)
+plt.close()
+
+
+# Demo 2: (Fig. 5 Symbiogenetic Evolution Processes Realized by Artifical Methods)
+TIMESTEPS = 20
+SIZE = 60
+grid = np.zeros((TIMESTEPS, SIZE)).astype(int)
+grid[0, :] = (
+    [0] * 20 + [0, 0, 5, 0, 0, 0, 5, 0, 1, -3, 1, -3, 0, 0, 0, 0, 0, 0, 0, 0] + [0] * 20
+)
+
+# Iteratively apply the replication updates/mutation norms
+for step in range(1, TIMESTEPS):
+    candidates = gather_replication_candidate(grid[step - 1, :])
+    grid[step, :] = norm_zero(grid[step - 1, :], candidates)
+    grid[:, :20] = 0
+    grid[:, -20:] = 0
+
+# View the final state!
+fig, ax = plt.subplots(1, 1)
+ax.imshow(grid, aspect="auto", interpolation="none", cmap="gray")
+plt.axis("off")
+plt.savefig("out/fig5.png", bbox_inches="tight", transparent=True, dpi=200)
 plt.close()
 
 
@@ -60,3 +84,7 @@ for name, rule in rules.items():
     plt.axis("off")
     plt.savefig(f"out/{name}.png", bbox_inches="tight", transparent=True, dpi=200)
     plt.close()
+
+
+# TODO; Extract and verify a replicator
+# TODO; Stats over time (distributino of values, collisions, etc.)
