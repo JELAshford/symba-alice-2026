@@ -3,7 +3,7 @@ import numpy as np
 
 SIZE = 512
 TIMESTEPS = 128
-MAX_VAL = 10
+MAX_VAL = 2
 SEED = 1701
 
 
