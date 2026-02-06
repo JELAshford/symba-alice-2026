@@ -124,71 +124,98 @@ if __name__ == "__main__":
     # plt.savefig("out/basic.png", bbox_inches="tight", transparent=True, dpi=200)
     # plt.show()
 
-    # View the full run
-    frames = np.array(grid).mean(axis=3)
+    # # View the full run
+    # frames = np.array(grid).mean(axis=3)
 
-    fig, ax = plt.subplots(1, 1)
-    artists = []
-    for frame in frames[::2]:
-        display = ax.imshow(frame, vmin=frames.min(), vmax=frames.max())
-        artists.append([display])
+    # fig, ax = plt.subplots(1, 1)
+    # artists = []
+    # for frame in frames[::2]:
+    #     display = ax.imshow(frame, vmin=frames.min(), vmax=frames.max())
+    #     artists.append([display])
 
-    ani = ArtistAnimation(fig=fig, artists=artists, interval=50)
-    ani.save("out/2d.mp4")
-    plt.close()
+    # ani = ArtistAnimation(fig=fig, artists=artists, interval=50)
+    # ani.save("out/2d.mp4")
+    # plt.close()
 
-    # Do a transplant
-    replicator_sample = np.array(grid)[-1, 40:60, 70:90, :]
-    new_grid = np.zeros((512, SIZE, SIZE, 2)).astype(int)
-    new_grid[0, 40:60, 40:60, :] = replicator_sample
-    new_grid = [
-        [[tuple(map(int, s)) for s in row] for row in timestep] for timestep in new_grid
-    ]
-
-    for step in range(1, 512):
-        candidates = gather_replication_candidate(new_grid[step - 1])
-        new_grid[step] = norm_zero(new_grid[step - 1], candidates)
-
-    # View the transplant run
-    transplant_frames = np.array(new_grid).mean(axis=3)
-
-    fig, ax = plt.subplots(1, 1)
-    artists = []
-    for frame in transplant_frames[::2]:
-        display = ax.imshow(
-            frame,
-            vmin=transplant_frames.min(),
-            vmax=transplant_frames.max(),
+    # View timesteps
+    # frames = np.array(grid).mean(axis=3)
+    frames = np.array(grid)
+    frames = np.atan2(frames[..., 0], frames[..., 1])
+    num_samples = 5
+    fig, ax = plt.subplots(1, num_samples, figsize=(10, 2))
+    for ind, sample in enumerate(
+        np.linspace(1, TIMESTEPS - 1, num_samples).astype(int)
+    ):
+        ax[ind].imshow(
+            frames[sample, ...],
+            vmin=frames.min(),
+            vmax=frames.max(),
+            cmap="bwr",
+            aspect="auto",
+            interpolation="none",
         )
-        artists.append([display])
+        ax[ind].set_title(f"Time: {sample}")
+        ax[ind].set_axis_off()
+    plt.savefig(
+        "out/2d_norm_zero/sample_frames.png",
+        bbox_inches="tight",
+        transparent=True,
+        dpi=200,
+    )
+    plt.show()
 
-    ani_transplant = ArtistAnimation(fig=fig, artists=artists, interval=50)
-    ani_transplant.save("out/2d_transplant.mp4")
-    plt.close()
+    # # Do a transplant
+    # replicator_sample = np.array(grid)[-1, 40:60, 70:90, :]
+    # new_grid = np.zeros((512, SIZE, SIZE, 2)).astype(int)
+    # new_grid[0, 40:60, 40:60, :] = replicator_sample
+    # new_grid = [
+    #     [[tuple(map(int, s)) for s in row] for row in timestep] for timestep in new_grid
+    # ]
 
-    # Random patch
-    new_grid = np.zeros((512, SIZE, SIZE, 2)).astype(int)
-    new_grid[0, 40:60, 40:60, :] = rng.integers(-MAX_VAL, MAX_VAL + 1, size=(20, 20, 2))
-    new_grid = [
-        [[tuple(map(int, s)) for s in row] for row in timestep] for timestep in new_grid
-    ]
+    # for step in range(1, 512):
+    #     candidates = gather_replication_candidate(new_grid[step - 1])
+    #     new_grid[step] = norm_zero(new_grid[step - 1], candidates)
 
-    for step in range(1, 512):
-        candidates = gather_replication_candidate(new_grid[step - 1])
-        new_grid[step] = norm_zero(new_grid[step - 1], candidates)
+    # # View the transplant run
+    # transplant_frames = np.array(new_grid).mean(axis=3)
 
-    patch_frames = np.array(new_grid).mean(axis=3)
+    # fig, ax = plt.subplots(1, 1)
+    # artists = []
+    # for frame in transplant_frames[::2]:
+    #     display = ax.imshow(
+    #         frame,
+    #         vmin=transplant_frames.min(),
+    #         vmax=transplant_frames.max(),
+    #     )
+    #     artists.append([display])
 
-    fig, ax = plt.subplots(1, 1)
-    artists = []
-    for frame in patch_frames[::2]:
-        display = ax.imshow(
-            frame,
-            vmin=patch_frames.min(),
-            vmax=patch_frames.max(),
-        )
-        artists.append([display])
+    # ani_transplant = ArtistAnimation(fig=fig, artists=artists, interval=50)
+    # ani_transplant.save("out/2d_transplant.mp4")
+    # plt.close()
 
-    ani_patch = ArtistAnimation(fig=fig, artists=artists, interval=50)
-    ani_patch.save("out/2d_patch.mp4")
-    plt.close()
+    # # Random patch
+    # new_grid = np.zeros((512, SIZE, SIZE, 2)).astype(int)
+    # new_grid[0, 40:60, 40:60, :] = rng.integers(-MAX_VAL, MAX_VAL + 1, size=(20, 20, 2))
+    # new_grid = [
+    #     [[tuple(map(int, s)) for s in row] for row in timestep] for timestep in new_grid
+    # ]
+
+    # for step in range(1, 512):
+    #     candidates = gather_replication_candidate(new_grid[step - 1])
+    #     new_grid[step] = norm_zero(new_grid[step - 1], candidates)
+
+    # patch_frames = np.array(new_grid).mean(axis=3)
+
+    # fig, ax = plt.subplots(1, 1)
+    # artists = []
+    # for frame in patch_frames[::2]:
+    #     display = ax.imshow(
+    #         frame,
+    #         vmin=patch_frames.min(),
+    #         vmax=patch_frames.max(),
+    #     )
+    #     artists.append([display])
+
+    # ani_patch = ArtistAnimation(fig=fig, artists=artists, interval=50)
+    # ani_patch.save("out/2d_patch.mp4")
+    # plt.close()
