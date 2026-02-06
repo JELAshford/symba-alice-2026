@@ -103,29 +103,33 @@ if __name__ == "__main__":
     ax[1].plot(list(map(calc_entropy, grid)), np.arange(TIMESTEPS))
     ax[1].invert_yaxis()
     ax[1].set_xlabel("Shannon Entropy")
+    plt.suptitle("Shannon Entropy over Time")
     plt.savefig("out/entropy.png", bbox_inches="tight", transparent=True, dpi=200)
     plt.show()
 
-    # # Calcualte mutual info
-    # mutual_info_comparison = squareform(pdist(grid, metric=calc_mutual_info))
-    # np.fill_diagonal(
-    #     mutual_info_comparison,
-    #     list(
-    #         map(
-    #             lambda ind: calc_mutual_info(grid[ind, :], grid[ind, :]),
-    #             np.arange(TIMESTEPS),
-    #         ),
-    #     ),
-    # )
+    # Calcualte mutual info
+    mutual_info_comparison = squareform(pdist(grid, metric=calc_mutual_info))
+    np.fill_diagonal(
+        mutual_info_comparison,
+        list(
+            map(
+                lambda ind: calc_mutual_info(grid[ind, :], grid[ind, :]),
+                np.arange(TIMESTEPS),
+            ),
+        ),
+    )
 
-    # # Show mutual information
-    # fig, ax = plt.subplots(1, 2, width_ratios=[0.7, 0.3], figsize=(10, 5))
-    # ax[0].imshow(mutual_info_comparison)
-    # ax[0].set_xlabel("Timestep")
-    # ax[0].set_ylabel("Timestep")
-    # ax[1].imshow(grid, aspect="auto", interpolation="none")
-    # ax[1].tick_params(which="both", bottom=False, left=False, labelbottom=False)
-    # ax[1].set_xlabel("1D Space")
-    # ax[1].set_ylabel("Time")
-    # plt.savefig("out/mutual_info.png", bbox_inches="tight", transparent=True, dpi=200)
-    # plt.show()
+    # Show mutual information
+    fig, ax = plt.subplots(1, 3, width_ratios=[0.25, 0.6, 0.15], figsize=(12, 5))
+    ax[0].imshow(grid, aspect="auto", interpolation="none")
+    ax[0].tick_params(which="both", bottom=False, left=False, labelbottom=False)
+    ax[0].set_xlabel("1D Space")
+    ax[0].set_ylabel("Time")
+    mi_plot = ax[1].imshow(mutual_info_comparison)
+    ax[1].set_xlabel("Time")
+    ax[2].plot(list(map(calc_entropy, grid)), np.arange(TIMESTEPS))
+    ax[2].invert_yaxis()
+    ax[2].set_xlabel("Shannon Entropy")
+    plt.colorbar(mi_plot, ax=ax[1])
+    plt.savefig("out/mutual_info.png", bbox_inches="tight", transparent=True, dpi=200)
+    plt.show()
