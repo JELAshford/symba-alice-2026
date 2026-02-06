@@ -124,21 +124,29 @@ if __name__ == "__main__":
     # plt.savefig("out/basic.png", bbox_inches="tight", transparent=True, dpi=200)
     # plt.show()
 
-    # # View the full run
-    # frames = np.array(grid).mean(axis=3)
+    # View the full run
+    frames = np.array(grid)
+    frames = np.atan2(frames[..., 0], frames[..., 1])
 
-    # fig, ax = plt.subplots(1, 1)
-    # artists = []
-    # for frame in frames[::2]:
-    #     display = ax.imshow(frame, vmin=frames.min(), vmax=frames.max())
-    #     artists.append([display])
+    fig, ax = plt.subplots(1, 1, figsize=(10, 10))
+    ax.set_axis_off()
+    artists = []
+    for ind, frame in enumerate(frames[::2]):
+        display = ax.imshow(
+            frame,
+            vmin=frames.min(),
+            vmax=frames.max(),
+            cmap="bwr",
+            aspect="auto",
+            interpolation="none",
+        )
+        artists.append([display])
 
-    # ani = ArtistAnimation(fig=fig, artists=artists, interval=50)
-    # ani.save("out/2d.mp4")
-    # plt.close()
+    ani = ArtistAnimation(fig=fig, artists=artists, interval=50)
+    ani.save("out/2d.mp4")
+    plt.close()
 
     # View timesteps
-    # frames = np.array(grid).mean(axis=3)
     frames = np.array(grid)
     frames = np.atan2(frames[..., 0], frames[..., 1])
     num_samples = 5
