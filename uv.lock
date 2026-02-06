@@ -750,6 +750,18 @@ wheels = [
 ]
 
 [[package]]
+name = "pyinform"
+version = "0.2.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/3f/04/333213a6e301b815bffd2f1694b8c8525acfc0ee42ae45ea99067aba40cc/pyinform-0.2.0.tar.gz", hash = "sha256:a29075e062acc64cbafd33431dda5357c6f03dfc4a000c57f322516d418299bb", size = 131896, upload-time = "2019-08-16T00:01:28.346Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/6d/4d/915887ddc6e5c46294575a36c7055a1a75b57a867d2f5841ecc942ff8e42/pyinform-0.2.0-py3-none-any.whl", hash = "sha256:03b9ae465d88038542e2570d5220ff9e7f21982c7000afa7276dc8c80d854fcd", size = 131198, upload-time = "2019-08-16T00:01:26.717Z" },
+]
+
+[[package]]
 name = "pyparsing"
 version = "3.3.2"
 source = { registry = "https://pypi.org/simple" }
@@ -904,6 +916,7 @@ source = { editable = "." }
 dependencies = [
     { name = "matplotlib" },
     { name = "networkx" },
+    { name = "pyinform" },
     { name = "scipy" },
 ]
 
@@ -916,6 +929,7 @@ dev = [
 requires-dist = [
     { name = "matplotlib", specifier = ">=3.10.8" },
     { name = "networkx", specifier = ">=3.6.1" },
+    { name = "pyinform", specifier = ">=0.2.0" },
     { name = "scipy", specifier = ">=1.17.0" },
 ]
 
