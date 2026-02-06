@@ -128,7 +128,7 @@ if __name__ == "__main__":
     frames = np.array(grid)
     frames = np.atan2(frames[..., 0], frames[..., 1])
 
-    fig, ax = plt.subplots(1, 1, figsize=(10, 10))
+    fig, ax = plt.subplots(1, 1, figsize=(5, 5))
     ax.set_axis_off()
     artists = []
     for ind, frame in enumerate(frames[::2]):
